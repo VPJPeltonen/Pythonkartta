@@ -1,4 +1,4 @@
-import pygame, random, time
+import pygame, random, time, colors
 
 class Continent:
     def __init__(self, name, color, wdt, hgt, grid_free):
@@ -12,7 +12,8 @@ class Continent:
                 break
         self.areas = [(self.X,self.Y)]
         self.done_areas = []
-        self.grid_free.remove((self.X,self.Y)) 
+        self.grid_free.remove((self.X,self.Y))
+        self.height = random.randint(0,20) 
 
     #----draw the continent-----
     def drawSelf(self, screen):
@@ -25,7 +26,7 @@ class Continent:
     def spread(self):        
         self.temp_areas = self.areas.copy()
         for x in self.temp_areas:
-            flip = random.randint(0,1)
+            flip = random.randint(0,1)                  #flip coin to see if it expands or not to make random looking continents
             if flip == 1:
                 self.done = True
                 if (x[0]-1,x[1]) in self.grid_free:     #if left
@@ -59,3 +60,18 @@ class World:
                 self.tempX = x               # x coordinate
                 self.tempY = y               # y coordinate
                 self.worldgrid.append((x,y))
+
+    def Waterlevels(self, c_list):
+        avg_list =[]
+        for x in c_list:
+            avg_list.append(x.height)
+        avg = sum(avg_list)/len(avg_list)        
+        print(avg)
+        for x in c_list:
+            if x.height <= avg:
+                x.color = colors.green
+            else:
+                x.color = colors.blue
+            
+        
+
